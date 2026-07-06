@@ -5,12 +5,18 @@ declare(strict_types=1);
 session_start();
 
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $name = '';
 $email = '';
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
+        $errors[] = 'Érvénytelen űrlapbeküldés. Kérlek, próbáld újra.';
+    }
+
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -46,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $connection->prepare(
                 'INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)'
             );
+
             $stmt->bind_param('sss', $name, $email, $passwordHash);
             $stmt->execute();
 
@@ -58,48 +65,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regisztráció | Login Task</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
 
-<main>
-    <h1>Regisztráció</h1>
+    <main>
 
-    <?php if (!empty($errors)): ?>
-        <div class="alert error">
-            <?php foreach ($errors as $error): ?>
-                <p><?= htmlspecialchars($error) ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+        <h1>Regisztráció</h1>
 
-    <form method="post">
-        <label for="name">Név</label>
-        <input type="text" id="name" name="name" value="<?= htmlspecialchars($name) ?>" required>
+        <?php if (!empty($errors)): ?>
+            <div class="alert error">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= htmlspecialchars($error) ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-        <label for="email">E-mail cím</label>
-        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
+        <form method="post">
 
-        <label for="password">Jelszó</label>
-        <input type="password" id="password" name="password" required>
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= htmlspecialchars(generateCsrfToken()) ?>">
 
-        <label for="password_confirm">Jelszó megerősítése</label>
-        <input type="password" id="password_confirm" name="password_confirm" required>
+            <label for="name">Név</label>
+            <input type="text" id="name" name="name" value="<?= htmlspecialchars($name) ?>" required>
 
-        <button type="submit">Regisztráció</button>
-    </form>
+            <label for="email">E-mail cím</label>
+            <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
 
-    <p>
-        Már van fiókod?
-        <a href="index.php">Bejelentkezés</a>
-    </p>
-</main>
+            <label for="password">Jelszó</label>
+            <input type="password" id="password" name="password" required>
 
-<script src="../assets/js/jquery-3.7.1.min.js"></script>
-<script src="../assets/js/main.js"></script>
+            <label for="password_confirm">Jelszó megerősítése</label>
+            <input type="password" id="password_confirm" name="password_confirm" required>
+
+            <button type="submit">Regisztráció</button>
+
+        </form>
+
+        <p>
+            Már van fiókod?
+            <a href="index.php">Bejelentkezés</a>
+        </p>
+
+    </main>
+
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+
 </body>
+
 </html>

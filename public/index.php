@@ -5,6 +5,7 @@ declare(strict_types=1);
 session_start();
 
 require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 $email = '';
 $errors = [];
@@ -15,6 +16,11 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!verifyCsrfToken($_POST['csrf_token'] ?? null)) {
+        $errors[] = 'Érvénytelen űrlapbeküldés. Kérlek, próbáld újra.';
+    }
+
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
@@ -30,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $connection->prepare(
             'SELECT id, name, email, password_hash FROM users WHERE email = ?'
         );
+
         $stmt->bind_param('s', $email);
         $stmt->execute();
 
@@ -37,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $result->fetch_assoc();
 
         if ($user && password_verify($password, $user['password_hash'])) {
+
             session_regenerate_id(true);
 
             $_SESSION['user_id'] = $user['id'];
@@ -54,48 +62,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés | Login Task</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
 
-<main>
-    <h1>Bejelentkezés</h1>
+    <main>
 
-    <?php if (isset($_GET['registered'])): ?>
-        <div class="alert success">
-            <p>Sikeres regisztráció. Most már bejelentkezhetsz.</p>
-        </div>
-    <?php endif; ?>
+        <h1>Bejelentkezés</h1>
 
-    <?php if (!empty($errors)): ?>
-        <div class="alert error">
-            <?php foreach ($errors as $error): ?>
-                <p><?= htmlspecialchars($error) ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['registered'])): ?>
+            <div class="alert success">
+                <p>Sikeres regisztráció. Most már bejelentkezhetsz.</p>
+            </div>
+        <?php endif; ?>
 
-    <form method="post">
-        <label for="email">E-mail cím</label>
-        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
+        <?php if (!empty($errors)): ?>
+            <div class="alert error">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= htmlspecialchars($error) ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-        <label for="password">Jelszó</label>
-        <input type="password" id="password" name="password" required>
+        <form method="post">
 
-        <button type="submit">Bejelentkezés</button>
-    </form>
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= htmlspecialchars(generateCsrfToken()) ?>">
 
-    <p>
-        Még nincs fiókod?
-        <a href="register.php">Regisztráció</a>
-    </p>
-</main>
+            <label for="email">E-mail cím</label>
+            <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
 
-<script src="../assets/js/jquery-3.7.1.min.js"></script>
-<script src="../assets/js/main.js"></script>
+            <label for="password">Jelszó</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Bejelentkezés</button>
+
+        </form>
+
+        <p>
+            Még nincs fiókod?
+            <a href="register.php">Regisztráció</a>
+        </p>
+
+    </main>
+
+    <script src="../assets/js/jquery-3.7.1.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+
 </body>
+
 </html>

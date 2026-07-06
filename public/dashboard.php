@@ -15,37 +15,40 @@ $userEmail = $_SESSION['user_email'] ?? '';
 
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Felhasználói adatok | Login Task</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
 
-<main>
-    <h1>Felhasználói adatok</h1>
+    <main class="dashboard-card">
 
-    <p>Sikeresen bejelentkeztél.</p>
+        <p class="eyebrow">Sikeres bejelentkezés</p>
 
-    <section>
-        <h2>Profil</h2>
+        <h1>Üdv, <?= htmlspecialchars($userName) ?>!</h1>
 
-        <p>
-            <strong>Név:</strong>
-            <?= htmlspecialchars($userName) ?>
-        </p>
+        <section class="profile-box">
+            <h2>Felhasználói adatok</h2>
 
-        <p>
-            <strong>E-mail cím:</strong>
-            <?= htmlspecialchars($userEmail) ?>
-        </p>
-    </section>
+            <div class="profile-row">
+                <span>Név</span>
+                <strong><?= htmlspecialchars($userName) ?></strong>
+            </div>
 
-    <p>
-        <a href="logout.php">Kijelentkezés</a>
-    </p>
-</main>
-<script src="../assets/js/main.js"></script>
+            <div class="profile-row">
+                <span>E-mail cím</span>
+                <strong><?= htmlspecialchars($userEmail) ?></strong>
+            </div>
+        </section>
+
+        <a class="logout-button" href="logout.php">Kijelentkezés</a>
+
+    </main>
+
 </body>
+
 </html>

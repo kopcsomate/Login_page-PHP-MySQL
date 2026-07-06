@@ -178,3 +178,64 @@ strong {
     color: #ffb3b3;
     font-size: 0.9rem;
 }
+
+.dashboard-card {
+    text-align: center;
+}
+
+.eyebrow {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #d4af37;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.profile-box {
+    text-align: left;
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+}
+
+.profile-row span {
+    color: #b8ad96;
+}
+
+.profile-row strong {
+    width: auto;
+    color: #f5f0e6;
+    text-align: right;
+}
+
+.logout-button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.85rem 1.2rem;
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    color: #d4af37;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.logout-button:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    background: rgba(212, 175, 55, 0.2);
+}
