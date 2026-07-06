@@ -72,11 +72,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regisztráció | Login Task</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
 </head>
 
 <body>
 
     <main>
+        <div class="logo">
+            <div class="logo-icon">
+                <span></span>
+            </div>
+        </div>
 
         <h1>Regisztráció</h1>
 

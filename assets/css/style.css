@@ -239,3 +239,67 @@ strong {
     transform: translateY(-2px);
     background: rgba(212, 175, 55, 0.2);
 }
+
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo h2 {
+    margin-top: 1rem;
+    color: #d4af37;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+}
+
+.logo p {
+    margin-top: .35rem;
+    color: #9f9f9f;
+    font-size: .9rem;
+}
+
+.logo-icon {
+    width: 72px;
+    height: 72px;
+    margin: auto;
+    border-radius: 50%;
+    border: 2px solid rgba(212,175,55,.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 3s infinite;
+    position: relative;
+}
+
+.logo-icon span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#d4af37,#b98b18);
+    box-shadow: 0 0 18px rgba(212,175,55,.6);
+}
+
+.logo-icon::after {
+    content: "";
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(212,175,55,.25);
+    border-radius: 50%;
+}
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.06);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
