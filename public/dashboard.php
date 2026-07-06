@@ -19,6 +19,7 @@ $userEmail = $_SESSION['user_email'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Felhasználói adatok | Login Task</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 
@@ -45,6 +46,6 @@ $userEmail = $_SESSION['user_email'] ?? '';
         <a href="logout.php">Kijelentkezés</a>
     </p>
 </main>
-
+<script src="../assets/js/main.js"></script>
 </body>
 </html>

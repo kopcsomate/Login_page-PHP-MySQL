@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $connection->prepare(
                 'INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)'
             );
-
             $stmt->bind_param('sss', $name, $email, $passwordHash);
             $stmt->execute();
 
@@ -63,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regisztráció | Login Task</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Regisztráció</h1>
 
     <?php if (!empty($errors)): ?>
-        <div>
+        <div class="alert error">
             <?php foreach ($errors as $error): ?>
                 <p><?= htmlspecialchars($error) ?></p>
             <?php endforeach; ?>
@@ -78,51 +78,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="post">
-
         <label for="name">Név</label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            value="<?= htmlspecialchars($name) ?>"
-            required
-        >
+        <input type="text" id="name" name="name" value="<?= htmlspecialchars($name) ?>" required>
 
         <label for="email">E-mail cím</label>
-        <input
-            type="email"
-            id="email"
-            name="email"
-            value="<?= htmlspecialchars($email) ?>"
-            required
-        >
+        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
 
         <label for="password">Jelszó</label>
-        <input
-            type="password"
-            id="password"
-            name="password"
-            required
-        >
+        <input type="password" id="password" name="password" required>
 
         <label for="password_confirm">Jelszó megerősítése</label>
-        <input
-            type="password"
-            id="password_confirm"
-            name="password_confirm"
-            required
-        >
+        <input type="password" id="password_confirm" name="password_confirm" required>
 
         <button type="submit">Regisztráció</button>
-
     </form>
 
     <p>
         Már van fiókod?
         <a href="index.php">Bejelentkezés</a>
     </p>
-
 </main>
 
+<script src="../assets/js/main.js"></script>
 </body>
 </html>

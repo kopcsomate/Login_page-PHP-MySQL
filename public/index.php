@@ -27,7 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $stmt = $connection->prepare('SELECT id, name, email, password_hash FROM users WHERE email = ?');
+        $stmt = $connection->prepare(
+            'SELECT id, name, email, password_hash FROM users WHERE email = ?'
+        );
         $stmt->bind_param('s', $email);
         $stmt->execute();
 
@@ -56,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés | Login Task</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 
@@ -63,13 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Bejelentkezés</h1>
 
     <?php if (isset($_GET['registered'])): ?>
-        <div>
+        <div class="alert success">
             <p>Sikeres regisztráció. Most már bejelentkezhetsz.</p>
         </div>
     <?php endif; ?>
 
     <?php if (!empty($errors)): ?>
-        <div>
+        <div class="alert error">
             <?php foreach ($errors as $error): ?>
                 <p><?= htmlspecialchars($error) ?></p>
             <?php endforeach; ?>
@@ -77,26 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="post">
-
         <label for="email">E-mail cím</label>
-        <input
-            type="email"
-            id="email"
-            name="email"
-            value="<?= htmlspecialchars($email) ?>"
-            required
-        >
+        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
 
         <label for="password">Jelszó</label>
-        <input
-            type="password"
-            id="password"
-            name="password"
-            required
-        >
+        <input type="password" id="password" name="password" required>
 
         <button type="submit">Bejelentkezés</button>
-
     </form>
 
     <p>
@@ -105,5 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </p>
 </main>
 
+<script src="../assets/js/main.js"></script>
 </body>
 </html>
